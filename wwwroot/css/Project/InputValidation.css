@@ -1,0 +1,42 @@
+﻿.input-validation-error {
+    border-color: #dc3545;
+}
+
+    .input-validation-error:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+row li {
+    list-style-type: none;
+    position: relative;
+    left: -40px;
+}
+.inputWithIcon input {
+    padding-left: 40px;
+}
+
+.inputWithIcon {
+    position: relative;
+}
+
+    .inputWithIcon i {
+        position: absolute;
+        left: 0;
+        top: 3px;
+        padding: 9px 12px;
+        color: gray;
+        transition: .3s;
+    }
+
+    .inputWithIcon input:focus + i {
+        color: black;
+    }
+
+    .inputWithIcon select {
+        padding-left: 40px;
+    }
+
+        .inputWithIcon select:focus + i {
+            color: black;
+        }

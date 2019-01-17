@@ -1,0 +1,30 @@
+﻿@model ProjectC_v2.Models.ProductFeature
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductFeature</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Feature)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Feature)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.FeatureId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

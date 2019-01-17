@@ -1,0 +1,220 @@
+﻿@model ProjectC_v2.Models.ShoppingCart
+@{
+    ViewData["Title"] = "ShoppingCart";
+}
+<style>
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+@if (Model == null || Model.ShoppingCartItems == null || Model.ShoppingCartItems.Count < 1)
+{
+    <h4>You currently do not have any items in your wishlist that can be ordered.</h4>
+    <a href="/" class="btn btn-primary">Click here to start viewing products</a>
+}
+else
+{
+    <h1>Shopping cart</h1>
+    <div>
+        @foreach (var obj in Model.ShoppingCartItems)
+        {
+            <div class="row" style="margin-top: 10px;" id="@obj.Inventory.ProductId _ @obj.Inventory.PlatformId">
+                <div class="col-sm-2">
+                    @if (obj.Inventory.Product.ProductImages.FirstOrDefault() != null)
+                    {
+                        <img src="@obj.Inventory.Product.ProductImages.First().URL" />
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.jpg" />
+                    }
+                </div>
+                <div class="col-sm-3">
+                    <h4>@obj.Inventory.Product.Name - @obj.Inventory.GamePlatform.PlatformName</h4>
+                    <p>
+                        @obj.Inventory.Product.Description
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row" style="margin-top: -5px;">
+                        <button class="btn btn-outline-primary rounded-circle btnClick" onclick="RemoveItem(@obj.Inventory.ProductId, @obj.Inventory.PlatformId , @obj.InventoryId)">
+                            <i class="fa fa-remove" style="color: red"></i>
+                        </button>
+                        <button class="btn btn-outline-primary rounded-circle btnClick" style="margin-left: 30px;" onclick="DecreaseAmount(@obj.Inventory.ProductId, @obj.Inventory.PlatformId, '@obj.Inventory.Price' , @obj.InventoryId)">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <div>
+                            <div style="border: 2px solid black; opacity: 0.5; margin-left: 15px; margin-top: 4px; width: 30px; height: 30px;">
+                                <p style="text-align: center" id="@obj.Inventory.ProductId _ @obj.Inventory.PlatformId _ Amount">@obj.Amount</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary rounded-circle btnClick" style="margin-left: 15px;" onclick="IncreaseAmount(@obj.Inventory.ProductId, @obj.Inventory.PlatformId, '@obj.Inventory.Price' , @obj.InventoryId)">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <div>
+                            <h6 style="margin-left: 20px; margin-top: 8px;" id="@obj.Inventory.ProductId _ @obj.Inventory.PlatformId _ Price">
+                                &#8364 @obj.Inventory.Price
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="text-primary">Ordered before 18:00 today, receive tomorrow</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <hr />
+    <div id="Bottom">
+        <div class="row">
+            <div class="col-sm-6" style="text-align: end; margin-left: 25px;">
+                <h6 style="text-align: end; font-weight: bold">
+                    Sending Cost
+                </h6>
+            </div>
+            <div class="col-sm-2" style="text-align: end; margin-left: -15px;">
+                <h6 class="text-primary" style="font-weight: bold">
+                    Free
+                </h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="text-align: end; margin-left: 25px;">
+                <h6 style="text-align: end; font-weight: bold">
+                    Total
+                </h6>
+            </div>
+            <div class="col-sm-2" style="text-align: end; margin-left: -15px;">
+                <h6 style="font-weight: bold" id="TotalPrice"></h6>
+            </div>
+        </div>
+        <div class="row">
+            <div style="margin-left: 60%;">
+                <a href="/Order/PlaceOrderWishList" class="bottomaligned btn btn-outline-primary">Checkout</a>
+            </div>
+        </div>
+    </div>
+    <script>
+    var productPrices = [];
+
+    function SetAmount(id, amount) {
+        document.getElementById("" + id).innerHTML = "" + amount;
+    }
+
+    function IncreaseAmount(id, platform, price, inventoryId) {
+        var s = id + " _ " + platform + " _ Amount";
+        var value = parseInt(document.getElementById(s).innerHTML);
+        IncreaseAmountCookie(inventoryId);
+        SetAmount(s, value + 1);
+        CalculatePrice(id, platform, value + 1, price);
+    }
+
+    function DecreaseAmount(id, platform, price, inventoryId) {
+        //console.log(price);
+        var s = id + " _ " + platform + " _ Amount";
+        var value = parseInt(document.getElementById(s).innerHTML);
+        if (value - 1 <= 0) {
+            return;
+        }
+        SetAmount(s, value - 1);
+        DecreaseAmountCookie(inventoryId);
+        CalculatePrice(id, platform, value - 1, price);
+    }
+
+    function RemoveItem(id, platform , inventoryId) {
+        document.getElementById(id + " _ " + platform).remove();
+        for (var i = 0; i < productPrices.length; i++) {
+            if (productPrices[i].productId == id && productPrices[i].platformId == platform) {
+                productPrices.splice(i, 1);
+            }
+        }
+        RemoveRequest(inventoryId);
+        GenerateTotalPrice();
+    }
+
+    async function RemoveRequest(inventoryId) {
+        var url = window.location.origin + "/WishList/RemoveFromWishList?inventoryId=" + inventoryId;
+        console.log(url);
+        let response = await fetch(url, { credentials: "same-origin" });
+        let data = await response;
+        if (response.ok) {
+            console.log("Succesfully removed product from cookie");
+        } else {
+            console.log("Failed to remove product from cookie");
+            console.log(response);
+        }
+        location.reload();
+    }
+    async function IncreaseAmountCookie(inventoryId) {
+        var url = window.location.origin + "/WishList/AddToWishList?inventoryId=" + inventoryId;
+        console.log(url);
+        let response = await fetch(url, { credentials: "same-origin" });
+        let data = await response;
+        if (response.ok) {
+            console.log("Succesfully removed product from cookie");
+        } else {
+            console.log("Failed to remove product from cookie");
+            console.log(response);
+        }
+    }
+    async function DecreaseAmountCookie(inventoryId) {
+        var url = window.location.origin + "/WishList/DecreaseAmount?inventoryId=" + inventoryId;
+        console.log(url);
+        let response = await fetch(url, { credentials: "same-origin" });
+        let data = await response;
+        if (response.ok) {
+            console.log("Succesfully removed product from cookie");
+        } else {
+            console.log("Failed to remove product from cookie");
+            console.log(response);
+        }
+    }
+
+    function CalculatePrice(id, platform, amount, price) {
+        var priceF = parseFloat(price.replace(",", "."));
+        var s = id + " _ " + platform + " _ Price";
+        console.log("Price = " + priceF);
+        var value = priceF * amount;
+        var object = { productId: id, platformId: platform, price: priceF, amount: amount };
+        var productExisted = false;
+        for (var i = 0; i < productPrices.length; i++) {
+            if (productPrices[i].productId == object.productId && productPrices[i].platformId == object.platformId) {
+                productPrices[i].amount = object.amount;
+                productPrices[i].price = object.price;
+                productExisted = true;
+            }
+        }
+        if (!productExisted) {
+            productPrices.push(object);
+        }
+        document.getElementById(s).innerHTML = "&#8364 " + value;
+        GenerateTotalPrice();
+    }
+
+    (function() {
+        console.log("called");
+        console.log('@Model.ShoppingCartItems.First().Inventory.Price');
+        @foreach (var obj in Model.ShoppingCartItems)
+        {
+            <text>
+                CalculatePrice(@obj.Inventory.ProductId, @obj.Inventory.PlatformId, @obj.Amount, '@obj.Inventory.Price')
+            </text>
+        }
+    })();
+
+    function GenerateTotalPrice() {
+        //console.log("p: " + productPrices[0].price);
+        var totalPrice = 0;
+        for (var x = 0; x < productPrices.length; x++) {
+            totalPrice += productPrices[x].price * productPrices[x].amount;
+        }
+        totalPrice = parseFloat(Math.round(totalPrice * 100) / 100).toFixed(2);
+        console.log(totalPrice);
+        document.getElementById("TotalPrice").innerHTML = "&#8364 " + totalPrice;
+    }
+    </script>
+}
+

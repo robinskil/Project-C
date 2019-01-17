@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav col-md-2">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ADMIN</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/AdminDashboard">Admin Dashboard</a>
+                    @*@Html.ActionLink("Dashboard", "Index", "AdminDashboard", null, new { @class = "dropdown-item" })*@
+                    <div class="dropdown-divider"></div>
+                    <a href="/User/Index" class="dropdown-item">User Manager</a>
+                    <a href="/Product/Index" class="dropdown-item">Product Manager</a>
+                    @*@Html.ActionLink("Users", "Index", "User", null, new { @class = "dropdown-item" })
+        @Html.ActionLink("Products", "Index", "Products", null, new { @class = "dropdown-item" })*@
+                    @Html.ActionLink("Order Manager", "Index", "Order", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Inventory Manager", "Index", "Inventories", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Product Feature Manager", "Index", "ProductFeatures", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Product Image Manager", "Index", "Images", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Publisher Manager", "Index", "Publishers", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("PG Rating Manager", "Index", "PGRatings", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Game Platform Manager", "Index", "GamePlatforms", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Game Type Manager", "Index", "GameTypes", null, new { @class = "dropdown-item" })
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

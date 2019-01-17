@@ -1,0 +1,56 @@
+﻿@model ProjectC_v2.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<link href="~/css/Project/InputValidation.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublisherId" class="control-label"></label>
+                <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
+                <span asp-validation-for="PublisherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GameTypeId" class="control-label"></label>
+                <select asp-for="GameTypeId" class="form-control" asp-items="ViewBag.GameTypeId"></select>
+                <span asp-validation-for="GameTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PGRatingId" class="control-label"></label>
+                <select asp-for="PGRatingId" class="form-control" asp-items="ViewBag.PGRatingId"></select>
+                <span asp-validation-for="PGRatingId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="/Product/Index">Back to List</a>
+</div>

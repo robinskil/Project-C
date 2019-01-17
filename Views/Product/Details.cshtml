@@ -1,0 +1,56 @@
+﻿@model ProjectC_v2.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link href="~/css/Project/InputValidation.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <div>
+        <h4>Product</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ReleaseDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Publisher.PublisherName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GameType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GameType.GenreName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PGRating)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PGRating.Rating)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
+        <a href="/Product/Index">Back to List</a>
+    </div>

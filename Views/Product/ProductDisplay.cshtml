@@ -1,0 +1,10 @@
+﻿@model Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/css/Project/ProductPage.css" rel="stylesheet" />
+<div id="root">
+
+</div>
+<script JSON='@Html.Raw(Json.Serialize(Model))' LoggedOn='@User.Identity.IsAuthenticated' src="~/dist/ProductPage.js"></script>

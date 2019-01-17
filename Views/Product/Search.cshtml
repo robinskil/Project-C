@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ProjectC_v2.Models.Product>
+@{
+    ViewData["Title"] = "Search";
+}
+<style>
+    img {
+        width: 100%;
+        height: 150px;
+        border-radius: 5px;
+        box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+        -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+        -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+        -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <label>@Model.Count() search results for "@ViewBag.Query"</label>
+    </div>
+    <div class="row">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Filter Products
+        </button>
+    </div>
+</div>
+<hr/>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Filter Products</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <form action="/Product/SearchFilter" method="GET">
+                @{
+                    <h5 style="margin-left:-12px">Publishers</h5>
+                    int x = 0;
+                    foreach (Publisher item in ViewBag.Publishers)
+                    {
+                        x++;
+                        <div class="row" style="margin-left:12px;">
+                            <input type="checkbox" class="custom-control-input" id="customControlValidation @x" name="publishersObject" value="@item.PublisherName">
+                            <label class="custom-control-label" for="customControlValidation @x">@item.PublisherName</label>
+                        </div>
+
+                    }
+                    <hr/>
+                    <h5 style="margin-left:-12px">Game Types</h5>
+                    foreach (GameType item in ViewBag.GameTypes)
+                    {
+                        x++;
+                        <div class="row" style="margin-left:12px;">
+                            <input type="checkbox" class="custom-control-input" id="customControlValidation @x" name="gameTypesObject" value="@item.GenreName">
+                            <label class="custom-control-label" for="customControlValidation @x">@item.GenreName</label>
+                        </div>
+                    }
+                    <hr/>
+                    <h5 style="margin-left:-12px">Game platforms</h5>
+                    foreach (GamePlatform item in ViewBag.Platforms)
+                    {
+                        x++;
+                        <div class="row" style="margin-left:12px;">
+                            <input type="checkbox" class="custom-control-input" id="customControlValidation @x" name="platformsObject" value="@item.PlatformName">
+                            <label class="custom-control-label" for="customControlValidation @x">@item.PlatformName</label>
+                        </div>
+                    }
+                    <hr/>
+                    <input hidden value="@ViewBag.Query" name="query">
+                }
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+    @foreach (Product p in Model)
+    {
+        <div class="col-sm-6">
+            <div class="row" style="height:150px">
+                <div class="col-sm-6">
+                    <a href="/product?name=@p.Name&platform=@p.Inventories.FirstOrDefault().GamePlatform.PlatformName">
+                        @if (p.ProductImages != null && p.ProductImages.FirstOrDefault() != null)
+                        {
+                            <img src="@p.ProductImages.First().URL" />
+                        }
+                        else
+                        {
+                            <img src="~/images/no-image.jpg" />
+                        }
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/product?name=@p.Name&platform=@p.Inventories.FirstOrDefault().GamePlatform.PlatformName"><h3 style="color:black">@p.Name</h3></a>
+                    <p style="line-height:1.2;font-size:10pt;max-height:80px;overflow: hidden;">@p.Description</p>
+                </div>
+            </div>
+            <hr />
+        </div>
+    }
+    <hr />
+</div>

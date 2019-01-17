@@ -1,0 +1,46 @@
+@model User 
+<link href="css/Project/ProfilePage.css" rel="stylesheet"/>
+<link href="~/css/Project/InputValidation.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<style>
+    .formPopUp{
+        display: none;
+        position: relative;
+        top: 0;
+        width: 50%;
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+    }
+</style>
+<div id="root">
+
+</div>
+<script>
+    function info() {
+        return ;
+    }
+</script>
+
+<script src="dist/Profile.js" jsonString='@Html.Raw(Json.Serialize(Model))'></script>
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>

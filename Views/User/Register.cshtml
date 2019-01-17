@@ -1,0 +1,103 @@
+﻿@model ProjectC_v2.Models.User
+<link href="~/css/Project/Validation.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<div class="row justify-content-center" style="padding-top:15px;">
+    <div class="col-md-4">
+        <h3 style="text-align:center; padding-top:15px;">Create a new account</h3>
+        <hr />
+        <form asp-action="Register" id="RegistrationForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="Email" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <i class="fas fa-at fa-lg" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="text-muted">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="form-group">
+                <div class="inputWithIcon">
+                    <input asp-for="Name" class="form-control" placeholder="Name" />
+                    <i class="fas fa-user fa-lg" aria-hidden="true"></i>
+                </div>
+                @*<label asp-for="Name" class="control-label"></label>*@
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="Surname" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <input asp-for="Surname" class="form-control" placeholder="Surname" />
+                    <i class="fas fa-user fa-lg" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="Street" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <input asp-for="Street" class="form-control" placeholder="Street" />
+                    <i class="fas fa-road fa-lg" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="PostalCode" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <input asp-for="PostalCode" class="form-control" maxlength="6" placeholder="Postal Code" />
+                    <i class="fas fa-globe fa-lg" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="CityId" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId">
+                        <option value="" style="display:none">Select the nearest city</option>
+                    </select>
+                    <i class="fas fa-city" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="Birthdate" class="control-label"></label>*@
+                <div class="inputWithIcon">
+                    <input asp-for="Birthdate" class="form-control" placeholder="Date of Birth" />
+                    <i class="fas fa-calendar-alt fa-lg" aria-hidden="true"></i>
+                </div>
+                <span asp-validation-for="Birthdate" class="text-danger"></span>
+                <div class="text-muted">Please fill in your Date of Birth.</div>
+            </div>
+            <div class="form-group">
+                <div class="inputWithIcon">
+                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                    <i class="fas fa-key fa-lg" aria-hidden="true"></i>
+                </div>
+                @*<label asp-for="Password" class="control-label"></label>*@
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create Account" class="btn btn-primary" onclick="Registering()" />
+            </div>
+            <script>
+                function Registering() {
+                    if ($("#RegistrationForm").valid()) {
+                        $.getScript("dist/Loading.js");
+                        console.log("Registering");
+                    }
+                }
+            </script>
+        </form>
+    </div>
+    <div id="root">
+
+    </div>
+</div>
+

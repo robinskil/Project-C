@@ -1,0 +1,97 @@
+﻿@model ProjectC_v2.Models.ViewModels.OrderTransactionViewModel
+
+@{
+    ViewData["Title"] = "Place Order";
+}
+<link href="~/css/Project/InputValidation.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<h2>Order Overview</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GenerateOrderWishList" id="myform">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Street" class="control-label"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class="form-control" maxlength="6" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IBAN" class="control-label"></label>
+                <input asp-for="IBAN" class="form-control" maxlength="18" />
+                <span asp-validation-for="IBAN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" required/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Product Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Platform")
+                </th>
+                <th>
+                    @Html.DisplayName("Amount")
+                </th>
+                <th>
+                    @Html.DisplayName("Price")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in (List<ShoppingCartItem>)ViewBag.Products)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Inventory.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Inventory.GamePlatform.PlatformName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        <label id="@item.InventoryId"></label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Place Order" class="btn btn-primary" form="myform" />
+</div>
+<script>
+    function CalculatePrice(amount , price , inventoryId) {
+        var priceF = parseFloat(price.replace(",", "."));
+        var totalPrice = amount * priceF;
+        totalPrice.toFixed(2);
+        document.getElementById(inventoryId).innerHTML = "&#8364 " + totalPrice;
+    }
+    @foreach(var item in (List<ShoppingCartItem>)ViewBag.Products)
+    {
+        <text>
+        CalculatePrice(@item.Amount, '@item.Inventory.Price' , @item.InventoryId);
+       </text>
+    }
+</script>
+

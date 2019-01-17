@@ -1,0 +1,86 @@
+﻿@model ProjectC_v2.Models.Product
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/Project/CreateProduct.css" rel="stylesheet" />
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<div>
+    <div class="row justify-content-center" style="margin-top: 15px;">
+        <div class="col-md-6 form-background fade-in-left">
+            <div class="top-title">
+                <h4 class="text-center" style="color: white;/*! top: 2px; */position: relative;top: 3px;">Create a product</h4>
+            </div>
+            <form asp-action="Create" style="margin-top:15px">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ReleaseDate" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="ReleaseDate" class="form-control" required />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Description" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Description" class="form-control" id="validationCustom01" required />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PublisherId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId">
+                            <option value="" style="display:none"></option>
+                        </select>
+                        <span asp-validation-for="PublisherId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="GameTypeId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <select asp-for="GameTypeId" class="form-control" asp-items="ViewBag.GameTypeId">
+                            <option value="" style="display:none"></option>
+                        </select>
+                        <span asp-validation-for="GameTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PGRatingId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <select asp-for="PGRatingId" class="form-control" asp-items="ViewBag.PGRatingId">
+                            <option value="" style="display:none"></option>
+                        </select>
+                        <span asp-validation-for="PGRatingId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="justify-content-start">
+                            <div class="form-group">
+                                <input type="submit" value="Create Product" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="float-right">
+                            <a href="/Product/Index" class="btn btn-primary">Back to List</a>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
